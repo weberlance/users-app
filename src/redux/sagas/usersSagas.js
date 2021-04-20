@@ -1,21 +1,21 @@
-import { call, fork, put, take } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { USERS } from '../constants';
 import { setUsers, setError } from '../actions/usersActions';
 import usersApi from '../api/users';
 
-export function* handleUsersLoad(payload) {
+function* handleUsersLoad({ payload }) {
   try {
-    const users = yield call(usersApi.getUsers);
-    yield put(setUsers(users))
+    const users = yield call(usersApi.getUsers, payload);
+    yield put(setUsers(users.data))
   } catch (error) {
-    // TODO: pass error object
-    yield put(setError(error.toString()));
+    // TODO: add notification
+    yield put(setError(error));
   }
 }
 
-export default function* usersLoad(action) {
-  // TODO: check here, should it be a loop?
-  const payload = yield take(USERS.LOAD);
-  yield fork(handleUsersLoad, payload)
-}
+const usersSagas = [
+  takeEvery(USERS.LOAD, handleUsersLoad),
+];
+
+export default usersSagas;

@@ -1,13 +1,42 @@
 import { USERS } from '../constants';
 
-// TODO: improvement make an initial state, loading, error
-const usersReducer = (state = { data: [] }, action) => {
+const initialState = {
+  data: [],
+  page: undefined,
+  perPage: undefined,
+  total: 0,
+  totalPages: 0,
+
+  error: null,
+  loading: false,
+};
+
+const usersReducer = (state = initialState, action) => {
   switch (action.type) {
+    case USERS.LOAD:
+      return {
+        ...state,
+        loading: true,
+      };
+
     case USERS.LOAD_SUCCESS:
-      return action.payload.data;
-      // TODO: make correct returnable value like {...state, error: action.payload}
+      return {
+        ...state,
+        data: action.payload.data,
+        page: action.payload.page,
+        perPage: action.payload.per_page,
+        total: action.payload.total,
+        totalPages: action.payload.total_pages,
+        loading: false,
+      };
+
     case USERS.LOAD_FAIL:
-      return action.payload;
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+
     default:
       return state;
   }

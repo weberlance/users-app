@@ -7,19 +7,13 @@ const http = axios.create({
 });
 
 const handleError = error => {
-  if (error.toJSON) {
-    error.toJSON();
-  }
-
   return Promise.reject(
     error.response
       ? {
-        error: {
-          status: error.response.status,
-          message: error.response.data,
-        },
+        status: error.response.status,
+        message: (error.response && error.response.data && error.response.data.error) || error.message,
       }
-      : { error }
+      : error
   );
 };
 
@@ -42,7 +36,7 @@ const handleSuccess = response => Promise.resolve({
 export const get = (url, query, token) => {
   const req = http
     .get(
-      encodeURI(url + (query || '')),
+      url + (query || ''),
       token && {
         headers: {
           Authorization: `Bearer ${token}`,
