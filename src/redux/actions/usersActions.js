@@ -1,3 +1,4 @@
+// TODO: consider file renaming to users | user
 import { USERS } from '../constants';
 
 const loadUsers = () => ({

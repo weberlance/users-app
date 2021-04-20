@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
 
 const App = () => {
   const classes = useStyles();
-
+  // TODO: add fuse component
   return (
     <div className={classes.container}>
       <TopBar />
