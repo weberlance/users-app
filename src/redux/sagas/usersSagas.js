@@ -9,7 +9,6 @@ function* handleUsersLoad({ payload }) {
     const users = yield call(usersApi.getUsers, payload);
     yield put(setUsers(users.data))
   } catch (error) {
-    // TODO: add notification
     yield put(setError(error));
   }
 }

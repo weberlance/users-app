@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { SnackbarProvider } from 'notistack';
 
 import './index.css';
 import App from './screens/App';
@@ -9,10 +10,14 @@ import configureStore from './redux/store';
 
 const store = configureStore();
 
+const snackbarAnchorOrigin = { vertical: 'top', horizontal: 'center' };
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <SnackbarProvider maxSnack={3} autoHideDuration={2500} anchorOrigin={snackbarAnchorOrigin}>
+        <App />
+      </SnackbarProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

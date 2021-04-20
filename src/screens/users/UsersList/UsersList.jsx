@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -10,7 +11,14 @@ import { loadUsers } from '../../../redux/actions/usersActions';
 
 const UsersList = () => {
   const dispatch = useDispatch();
-  const { data: users, page, perPage, totalPages } = useSelector(state => state.users);
+  const { data: users, page, perPage, totalPages, error } = useSelector(state => state.users);
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (error && error.message && typeof error.message === 'string') {
+      enqueueSnackbar(error.message);
+    }
+  }, [error, enqueueSnackbar]);
 
   useEffect(() => {
     dispatch(loadUsers({ page: 1, perPage: 6 }));
