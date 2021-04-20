@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+const baseUrl = process.env.REACT_APP_BASE_API;
+
+const http = axios.create({
+  baseURL: `${baseUrl}/api`,
+});
+
 const handleError = error => {
   if (error.toJSON) {
     error.toJSON();
@@ -22,10 +28,6 @@ const handleSuccess = response => Promise.resolve({
   headers: response.headers,
 });
 
-// TODO:
-// 1. create seaparate api files for user and etc
-// 2. possible use axios.create with baseUrl and move base url to .env file
-
 /**
  * Make HTTP POST call
  * @param {string} url
@@ -38,7 +40,7 @@ const handleSuccess = response => Promise.resolve({
  * get("http://management-api", "?search=bonus", "asd32eD5F");
  */
 export const get = (url, query, token) => {
-  const req = axios
+  const req = http
     .get(
       encodeURI(url + (query || '')),
       token && {

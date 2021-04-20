@@ -1,12 +1,12 @@
 import { call, fork, put, take } from 'redux-saga/effects';
 
 import { USERS } from '../constants';
-import { setUsers, setError } from '../actions/usersActions'
-import { get } from '../api'
+import { setUsers, setError } from '../actions/usersActions';
+import usersApi from '../api/users';
 
 export function* handleUsersLoad(payload) {
   try {
-    const users = yield call(get, 'https://reqres.in/api/users');
+    const users = yield call(usersApi.getUsers);
     yield put(setUsers(users))
   } catch (error) {
     // TODO: pass error object
