@@ -10,6 +10,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { loadUsers } from '../../../redux/actions/usersActions';
 
 const UsersList = () => {
+  const startPage = 1;
   const dispatch = useDispatch();
   const { data: users, page, perPage, totalPages, error } = useSelector(state => state.users);
   const { enqueueSnackbar } = useSnackbar();
@@ -21,7 +22,7 @@ const UsersList = () => {
   }, [error, enqueueSnackbar]);
 
   useEffect(() => {
-    dispatch(loadUsers({ page: 1, perPage: 6 }));
+    dispatch(loadUsers({ page: startPage, perPage: 6 }));
   }, [dispatch]);
 
   const handlePageChange = useCallback(
@@ -50,7 +51,7 @@ const UsersList = () => {
           </ListItem>
         ))}
       </List>
-      <Pagination count={totalPages} variant="outlined" shape="rounded" onChange={handlePageChange} />
+      <Pagination page={page || startPage} count={totalPages} variant="outlined" shape="rounded" onChange={handlePageChange} />
     </div>
   )
 };
