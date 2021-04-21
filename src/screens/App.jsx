@@ -1,24 +1,13 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-
-import Users from './users';
-import TopBar from './_shared/TopBar';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-}));
+import AppRouter from '../router';
 
 const App = () => {
-  const classes = useStyles();
   // TODO: add fuse component
   return (
-    <div className={classes.container}>
-      <TopBar />
-      <Users />
-    </div>
+    <>
+      <AppRouter />
+      {/* TODO: add loader */}
+    </>
   )
 };
 
