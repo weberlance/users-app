@@ -28,6 +28,16 @@ const useStyles = makeStyles((theme) => ({
     color: blueGrey[600],
     marginRight: theme.spacing(2),
   },
+  backButton: {
+    color: theme.palette.action.active,
+    padding: 0,
+    marginLeft: -theme.spacing(5),
+    marginRight: theme.spacing(1.25),
+    '& svg': {
+      width: '1.25em',
+      height: '1.25em',
+    }
+  },
 }));
 
 export default useStyles;

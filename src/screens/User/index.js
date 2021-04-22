@@ -7,6 +7,9 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button';
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 
 import FieldContainer from '../_shared/FieldContainer';
 import TextField from '../_shared/TextField';
@@ -14,6 +17,7 @@ import validate from './validation';
 import useStyles from './styled';
 
 const User = ({
+  history,
   match: {
     params: {
       id,
@@ -33,13 +37,26 @@ const User = ({
     console.log(values);
   }, []);
 
+  const handleBack = useCallback(() => {
+    history.push('/users');
+  }, [history]);
+
   return (isNew || user.id) ? (
     <Box display="flex" justifyContent="center">
       <Box my={6} width="388px" clone>
         <Paper className={classes.container}>
           <Box pt={3} pr={3} pb={1.25} pl={6.5}>
             <ListItemText
-              primary={isNew ? 'New user details' : `${user.first_name} ${user.last_name}`}
+              primary={
+                <Box>
+                  <IconButton aria-label="Back to list" className={classes.backButton} onClick={handleBack}>
+                    <KeyboardArrowLeftIcon/>
+                  </IconButton>
+                  <span>
+                    {isNew ? 'New user details' : `${user.first_name} ${user.last_name}`}
+                  </span>
+                </Box>
+              }
               secondary={isNew ? undefined : `ID: ${user.id}`}
               classes={{
                 root: classes.title,
@@ -105,6 +122,7 @@ const User = ({
 };
 
 User.propTypes = {
+  history: PropTypes.object.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.oneOfType([
