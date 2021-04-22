@@ -34,8 +34,6 @@ const UsersList = ({ onUserSelect }) => {
     [page, perPage, dispatch],
   );
 
-  // TODO:
-  // add loader
   return (
     <Box px={3}>
       <List disablePadding>
