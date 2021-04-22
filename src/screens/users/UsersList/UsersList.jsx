@@ -1,15 +1,15 @@
 import React, { useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
+import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { loadUsers } from '../../../redux/actions/usersActions';
+import Item from './Item';
 
-const UsersList = () => {
+const UsersList = ({ onUserSelect }) => {
   const startPage = 1;
   const dispatch = useDispatch();
   const { data: users, page, perPage, totalPages, error } = useSelector(state => state.users);
@@ -36,24 +36,26 @@ const UsersList = () => {
 
   // TODO:
   // add loader
-  // apply styles
   return (
-    <div>
-      <List>
-        {users.map(user => (
-          <ListItem key={`user-${user.id}`}>
-            <ListItemText
-              primary={
-                <Typography variant="h6">{`${user.first_name} ${user.last_name}`}</Typography>
-              }
-              secondary={user.email}
-            />
-          </ListItem>
-        ))}
+    <Box px={3}>
+      <List disablePadding>
+        {users.map(user => <Item key={`user-${user.id}`} user={user} onUserSelect={onUserSelect} />)}
       </List>
-      <Pagination page={page || startPage} count={totalPages} variant="outlined" shape="rounded" onChange={handlePageChange} />
-    </div>
+      <Box display="flex" justifyContent="center" pb={2}>
+        <Pagination
+          page={page || startPage}
+          count={totalPages}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
+      </Box>
+    </Box>
   )
+};
+
+UsersList.propTypes = {
+  onUserSelect: PropTypes.func.isRequired,
 };
 
 export default UsersList;
