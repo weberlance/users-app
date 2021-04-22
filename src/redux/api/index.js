@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getAuthHeaders } from './utils';
 
 const baseUrl = process.env.REACT_APP_BASE_API;
 
@@ -38,9 +39,33 @@ export const get = (url, query, token) => {
     .get(
       url + (query || ''),
       token && {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { ...getAuthHeaders(token) },
+      },
+    );
+
+  return req.then(handleSuccess).catch(handleError);
+};
+
+export const post = (url, data, token) => {
+  const req = http
+    .post(
+      url,
+      data,
+      token && {
+        headers: { ...getAuthHeaders(token) },
+      },
+    );
+
+  return req.then(handleSuccess).catch(handleError);
+};
+
+export const put = (url, data, token) => {
+  const req = http
+    .put(
+      url,
+      data,
+      token && {
+        headers: { ...getAuthHeaders(token) },
       },
     );
 

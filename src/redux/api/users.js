@@ -1,4 +1,4 @@
-import { get } from './';
+import { get, post, put } from './';
 import { queryString } from '../../utils';
 
 const users = {
@@ -10,6 +10,10 @@ const users = {
 
     return get('/users', query);
   },
+
+  saveUser: user => post('/users', user),
+
+  updateUser: user => put('/users', user),
 };
 
 export default users;

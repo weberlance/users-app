@@ -1,0 +1,7 @@
+const USER = {
+  SAVE: 'USER_SAVE',
+  SAVE_SUCCESS: 'USER_SAVE_SUCCESS',
+  SAVE_FAIL: 'USER_SAVE_FAIL',
+};
+
+export default USER;

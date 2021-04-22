@@ -1,16 +1,18 @@
 import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import { Redirect } from 'react-router-dom';
 import { Form } from 'react-final-form';
+
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button';
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 
+import { saveUser } from '../../redux/actions/user';
 import FieldContainer from '../_shared/FieldContainer';
 import TextField from '../_shared/TextField';
 import validate from './validation';
@@ -26,20 +28,24 @@ const User = ({
 }) => {
   const classes = useStyles();
   const isNew = useMemo(() => id === 'new', [id]);
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   const storeUserData = useSelector(state => {
     // TODO: improving, add reselect
     return state.users.data.find(u => '' + u.id === id);
   });
   const user = useMemo(() => ({ ...storeUserData }), [storeUserData]);
 
-  // TODO: implement
-  const onSubmit = useCallback(values => {
-    console.log(values);
-  }, []);
-
   const handleBack = useCallback(() => {
     history.push('/users');
   }, [history]);
+
+  const onSubmit = useCallback(values => {
+    dispatch(saveUser(values, () => {
+      handleBack();
+      enqueueSnackbar('Thank you, your submission is pending and will appear after validation.');
+    }));
+  }, [dispatch, handleBack, enqueueSnackbar]);
 
   return (isNew || user.id) ? (
     <Box display="flex" justifyContent="center">
