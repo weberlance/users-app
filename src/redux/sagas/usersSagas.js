@@ -1,19 +1,20 @@
-import { call, fork, put, take } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { USERS } from '../constants';
-import { setUsers, setError } from '../actions/usersActions'
-import { get } from '../api'
+import { setUsers, setError } from '../actions/usersActions';
+import usersApi from '../api/users';
 
-export function* handleUsersLoad(payload) {
+function* handleUsersLoad({ payload }) {
   try {
-    const users = yield call(get, 'https://reqres.in/api/users');
-    yield put(setUsers(users))
+    const users = yield call(usersApi.getUsers, payload);
+    yield put(setUsers(users.data))
   } catch (error) {
-    yield put(setError(error.toString()));
+    yield put(setError(error));
   }
 }
 
-export default function* usersLoad(action) {
-  const payload = yield take(USERS.LOAD);
-  yield fork(handleUsersLoad, payload)
-}
+const usersSagas = [
+  takeEvery(USERS.LOAD, handleUsersLoad),
+];
+
+export default usersSagas;

@@ -1,17 +1,19 @@
+// TODO: consider file renaming to users | user
 import { USERS } from '../constants';
 
-const loadUsers = () => ({
-  type: USERS.LOAD
+const loadUsers = listState => ({
+  type: USERS.LOAD,
+  payload: listState,
 });
 
-const setUsers = posts => ({
+const setUsers = users => ({
   type: USERS.LOAD_SUCCESS,
-  payload: posts
+  payload: users,
 });
 
 const setError = error => ({
   type: USERS.LOAD_FAIL,
-  payload: error
+  payload: error,
 });
 
 export { loadUsers, setError, setUsers };

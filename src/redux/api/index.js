@@ -1,17 +1,24 @@
 import axios from 'axios';
+import { getAuthHeaders } from './utils';
 
-const handleError = error => (
-  error.response
-    ? {
-      error: {
-        error: error.response.status,
-        message: error.response.data,
-      },
-    }
-    : { error }
-);
+const baseUrl = process.env.REACT_APP_BASE_API;
 
-const handleSuccess = response => ({
+const http = axios.create({
+  baseURL: `${baseUrl}/api`,
+});
+
+const handleError = error => {
+  return Promise.reject(
+    error.response
+      ? {
+        status: error.response.status,
+        message: (error.response && error.response.data && error.response.data.error) || error.message,
+      }
+      : error
+  );
+};
+
+const handleSuccess = response => Promise.resolve({
   data: response.data,
   headers: response.headers,
 });
@@ -22,21 +29,43 @@ const handleSuccess = response => ({
  * @param {string} query
  * @param {string} token
  *
- * @returns {{json: Object|undefined, error: Object|undefined}} response
- * @returns {Object|undefined} response.json
- * @returns {{status: Object, message: Object}|Object|undefined} response.error
+ * @returns {Promise} Promise object with response data
  *
  * @example
  * get("http://management-api", "?search=bonus", "asd32eD5F");
  */
 export const get = (url, query, token) => {
-  const req = axios
+  const req = http
     .get(
-      encodeURI(url + (query || '')),
+      url + (query || ''),
       token && {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { ...getAuthHeaders(token) },
+      },
+    );
+
+  return req.then(handleSuccess).catch(handleError);
+};
+
+export const post = (url, data, token) => {
+  const req = http
+    .post(
+      url,
+      data,
+      token && {
+        headers: { ...getAuthHeaders(token) },
+      },
+    );
+
+  return req.then(handleSuccess).catch(handleError);
+};
+
+export const put = (url, data, token) => {
+  const req = http
+    .put(
+      url,
+      data,
+      token && {
+        headers: { ...getAuthHeaders(token) },
       },
     );
 
