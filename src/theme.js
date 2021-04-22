@@ -10,6 +10,8 @@ const muiTheme = createMuiTheme({
   },
   customColors: {
     applicationBg: blueGrey[50],
+    footerBg: '#E1E4E5',
+    divider: '#C1C6C8',
   },
 });
 

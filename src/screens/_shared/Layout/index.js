@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 
 import AppContainer from '../AppContainer';
 import TopBar from '../TopBar';
+import Footer from '../Footer';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -40,9 +41,7 @@ const Layout = ({ children }) => {
           </AppContainer>
         </Box>
       </Box>
-
-      {/* TODO: implement footer */}
-      <div>footer</div>
+      <Footer />
     </Box>
   );
 };
